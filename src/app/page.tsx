@@ -1,14 +1,115 @@
 "use client"
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FormEvent } from 'react';
 import Modal from '../components/Modal';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import Card from '@/components/Card';
+import { calpro, calscore } from './api';
+import { Button } from '@/components/ui/button';
+import { Mail } from "lucide-react"
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(0);
+  
+  const [walletadd, Setwalletadd] = useState("")
+
+  const [Total_Balance, setTotal_Balance] = useState(0);
+
+
+  const [Total_loans, setTotal_loans] = useState(0);
+
+
+  const [Credit_Score, setCredit_Score] = useState(0);
+
+ 
+  
+  async function handlecalscore(e: FormEvent) {
+    nextModal()
+    e.preventDefault()
+    // setIsLoading(true);
+    console.log("cal score ")
+    // Setwalletadd(`0x0fe93c4febd368204d81758468ee5bfaf623fa5f`)
+ 
+    const res = await calscore(`0x0fe93c4febd368204d81758468ee5bfaf623fa5f`).then((res: any) => {
+      console.log(res.data)
+      // setIsLoading(false);
+      nextModal()
+      
+      const { wallet_attributes } = res.data as any;
+
+      const {
+        eth_balance_worth_in_usd,
+        bored_ape_worth_in_usd,
+        mutant_ape_worth_in_usd,
+        otherdeed_for_otherside_worth_in_usd,
+        azuki_worth_in_usd,
+        azuki_elemental_beans_worth_in_usd,
+        azuki_elementals_worth_in_usd,
+        beanz_official_worth_in_usd,
+        redacted_remilio_babies_worth_in_usd,
+        milady_maker_worth_in_usd,
+        clone_x_worth_in_usd,
+        doodles_worth_in_usd,
+        pudgy_penguin_worth_in_usd,
+        de_gods_worth_in_usd,
+        
+        bend_dao_num_of_total_loans,
+        blend_num_of_total_loans,
+        nftfi_num_of_total_loans,
+        
+        bend_dao_num_of_loan_liquidated,
+        blend_num_of_loan_liquidated,
+        nftfi_num_of_loan_liquidated,
+        
+        eth_balance,
+        
+        active_age_of_wallet_in_days,
+      
+      
+      
+      
+      
+      } = wallet_attributes;
+     // ye chaye 
+     const Total_Balance =
+     eth_balance_worth_in_usd +
+     bored_ape_worth_in_usd +
+     mutant_ape_worth_in_usd +
+     otherdeed_for_otherside_worth_in_usd +
+     azuki_worth_in_usd +
+     azuki_elemental_beans_worth_in_usd +
+     azuki_elementals_worth_in_usd +
+     beanz_official_worth_in_usd +
+     redacted_remilio_babies_worth_in_usd +
+     milady_maker_worth_in_usd +
+     clone_x_worth_in_usd +
+     doodles_worth_in_usd +
+     pudgy_penguin_worth_in_usd +
+     de_gods_worth_in_usd;
+   
+
+   setTotal_Balance(Total_Balance);
+   
+   
+   // ye chaye 
+
+   const Total_loans =
+     bend_dao_num_of_total_loans +
+     blend_num_of_total_loans +
+     nftfi_num_of_total_loans
+
+   setTotal_loans(Total_loans);
+
+        
+      // ye chaye 
+      setCredit_Score(res.data.credit_score)
+    
+
+    })
+    }
+
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -22,6 +123,8 @@ export default function Home() {
 
   const nextModal = useCallback(() => {
     setCurrentModal((prev) => prev + 1);
+   
+
   }, []);
 
   const cardDetails = [
@@ -36,8 +139,11 @@ export default function Home() {
     setIsChecked(!isChecked);
   };
 
+
   // Preload images
   useEffect(() => {
+
+   
     const images = [
       "/Image wrap.svg", "modalheader.svg", "cancelButton.svg",
       "continueButton.svg", "tickicon.svg", "ButtoncloseX.svg",
@@ -46,7 +152,7 @@ export default function Home() {
       "pantom.svg", "Coinase.svg", "Plaid.svg", "thirdconfirmedButton.svg",
       "thirdscreenHinttext.svg", "fourthscreenimg.svg", "fourthscreentext.svg",
       "fifthtopicon.svg", "fifthscreentoptitle.svg", "fifthcontinueButton.svg",
-      "sixtopicon.svg", "sixtoptitle.svg", "sixButtonclose X.svg", 
+      "sixtopicon.svg", "sixtoptitle.svg", "sixButtonclose X.svg",
       "sixButtonsetting.svg", "sixButtoncancel.svg", "sixButtonconfirm.svg",
       "seventhtopicon.svg", "seventhtext.svg", "seventhuttoncontionue.svg"
     ];
@@ -117,13 +223,27 @@ export default function Home() {
                   </div>
                   <div className="flex-col justify-center items-center mt-4 space-y-4">
                     <img src="thirdscreentitle.svg" alt="Image wrap" />
-                    <img src="metamask.svg" alt="Image wrap" />
-                    <img src="pantom.svg" alt="Image wrap" />
-                    <img src="Coinase.svg" alt="Image wrap" />
-                    <img src="Plaid.svg" alt="Image wrap" />
+                    <div className='flex-col  space-y-6'>
+                    <Button className='flex  w-96 gap-6 border-2' variant="ghost">
+                    <img src="metamask.svg" alt="Image wrap" />Meta Mask
+                  </Button>
+                 
+                  <Button className='flex w-96  gap-6 border-2' variant="ghost">
+                    <img src="pantom.svg" alt="Image wrap" />Phantom
+                  </Button>
+                  
+                  <Button className='flex  w-96 gap-6 border-2' variant="ghost">
+                    <img src="Coinase.svg" alt="Image wrap" />CoinBase
+                  </Button>
+                  
+                  <Button className='flex  w-96 gap-6 border-2' variant="ghost">
+                    <img src="Plaid.svg" alt="Image wrap" />Plaid
+                  </Button>
                   </div>
-                  <div className="flex justify-center mt-2">
-                    <button className="bg-white text-white font-bold py-2 px-4 rounded" onClick={nextModal}>
+                  
+                  </div>
+                  <div className="flex-col justify-center mt-2">
+                    <button className="bg-white text-white font-bold py-2 px-4 rounded" onClick={handlecalscore}>
                       <img src="thirdconfirmedButton.svg" alt="Image wrap" className="mt-2 hover:shadow-lg" />
                     </button>
                     <img src="thirdscreenHinttext.svg" alt="Image wrap" className="mt-4" />
@@ -144,15 +264,15 @@ export default function Home() {
                   </div>
                   <div className="flex-col mt-6">
                     <div className="flex justify-center">
-                      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">703</h1>
+                      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">{Credit_Score}</h1>
                     </div>
                     <div className="flex justify-between mt-4">
                       <h1>Total Assets</h1>
-                      <h1>$52,456</h1>
+                      <h1>${Total_Balance}</h1>
                     </div>
                     <div className="flex justify-between mt-4">
                       <h1>Current Loans</h1>
-                      <h1>2</h1>
+                      <h1>{Total_loans}</h1>
                     </div>
                     <div className="flex-col mt-6">
                       <h1>Get your Vera Report via email</h1>
