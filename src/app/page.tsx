@@ -12,6 +12,8 @@ import { Mail } from "lucide-react"
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentModal, setCurrentModal] = useState(0);
+
+  const [connectionStatus, setConnectionStatus] = useState("");
   
   const [walletadd, Setwalletadd] = useState("")
 
@@ -23,7 +25,81 @@ export default function Home() {
 
   const [Credit_Score, setCredit_Score] = useState(0);
 
- 
+
+  
+  
+let ethereum:any 
+
+  const connectToWallet = async () => {
+    console.log(ethereum)
+    ethereum = (window as  any ).ethereum;
+    if (ethereum) {
+      try {
+        // Requesting access to MetaMask wallet
+       const etherValue= await ethereum.request({ method: "eth_requestAccounts" }).
+  
+       then((addr: string[])=>{
+        // setEtherValuestate(addr)
+        //  address && 
+      
+        console.log(addr[0])
+        
+        Setwalletadd(addr[0]); ;
+         
+       
+        //  dispatch(getWalletAttributes( { walletAddress:addr[0]}));
+        
+        // dispatch(getWalletNftsCount({ walletAddress:addr[0]}))
+        
+        //  dispatch(getWalletNftsCount({walletAddress:"0xfa3ce71036dd4564d7d8de19d2b90fb856c5be82"}))
+        // dispatch(getWalletNftsCount({walletAddress:addr[0]}))
+        
+        // dispatch(getHighestLtvLoans({walletAddress:addr[0]}))
+        
+        
+        // 0xfa3ce71036dd4564d7d8de19d2b90fb856c5be82
+      
+        
+       //  dispatch(getWalletAttributes( { walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
+        
+        
+        //  address && 
+        
+        //  address && 
+      //    dispatch(calcCreditScore({ walletAddress:addr[0]}))
+      //  //  dispatch(calcCreditScore({ walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}))
+        
+      //   //  address && 
+      //   dispatch(calcPreApproval({ walletAddress:addr[0]}))
+      //   // dispatch(fetchNFTsForOwner({walletAddress:addr[0]}))
+      //    dispatch(getWalletTokensAndAssets({walletAddress:addr[0]}))
+      // //  dispatch(getWalletTokensAndAssets({walletAddress:"0x3E18E3987b3B73F4E7CB80e2B25776Df7a30bb8b"}))
+
+        // 0x3E18E3987b3B73F4E7CB80e2B25776Df7a30bb8b
+      //   dispatch(fetchNFTsForOwner({walletAddress:addr[0]}));
+      // //  dispatch(fetchNFTsForOwner({walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
+      // // Fetch Tokens for a wallet address
+      //  dispatch(fetchTokensForOwner({ walletAddress:addr[0]}));
+       // dispatch(fetchTokensForOwner({ walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
+       
+        //dispatch(fetchTitleForOwner({ walletAddress:"0x0fe93C4feBD368204D81758468EE5BFAF623fA5f"}))
+        // dispatch(fetchTitleForOwner({ walletAddress:addr[0]}))
+       }
+       );
+     
+      
+        setConnectionStatus("Successfully Connected");
+        // state.address = etherValue
+        console.log(connectionStatus)
+      } catch (error) {
+        setConnectionStatus("Connection Failed");
+        console.error("MetaMask connection error:", error);
+      }
+    } else {
+      setConnectionStatus("MetaMask Not Detected");
+    }
+   
+  };
   
   async function handlecalscore(e: FormEvent) {
     nextModal()
@@ -31,8 +107,11 @@ export default function Home() {
     // setIsLoading(true);
     console.log("cal score ")
     // Setwalletadd(`0x0fe93c4febd368204d81758468ee5bfaf623fa5f`)
+    
  
-    const res = await calscore(`0x0fe93c4febd368204d81758468ee5bfaf623fa5f`).then((res: any) => {
+    // `0x0fe93c4febd368204d81758468ee5bfaf623fa5f`
+
+    const res = await calscore(walletadd).then((res: any) => {
       console.log(res.data)
       // setIsLoading(false);
       nextModal()
@@ -144,6 +223,7 @@ export default function Home() {
   useEffect(() => {
 
    
+    
     const images = [
       "/Image wrap.svg", "modalheader.svg", "cancelButton.svg",
       "continueButton.svg", "tickicon.svg", "ButtoncloseX.svg",
@@ -224,7 +304,7 @@ export default function Home() {
                   <div className="flex-col justify-center items-center mt-4 space-y-4">
                     <img src="thirdscreentitle.svg" alt="Image wrap" />
                     <div className='flex-col  space-y-6'>
-                    <Button className='flex  w-96 gap-6 border-2' variant="ghost">
+                    <Button className='flex  w-96 gap-6 border-2' variant="ghost" onClick={connectToWallet}>
                     <img src="metamask.svg" alt="Image wrap" />Meta Mask
                   </Button>
                  
