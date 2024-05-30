@@ -29,7 +29,7 @@ export default function Home() {
   
   
 let ethereum:any 
-
+  
   const connectToWallet = async () => {
     console.log(ethereum)
     ethereum = (window as  any ).ethereum;
@@ -39,58 +39,25 @@ let ethereum:any
        const etherValue= await ethereum.request({ method: "eth_requestAccounts" }).
   
        then((addr: string[])=>{
-        // setEtherValuestate(addr)
-        //  address && 
       
+     
+
         console.log(addr[0])
         
-        Setwalletadd(addr[0]); ;
-         
-       
-        //  dispatch(getWalletAttributes( { walletAddress:addr[0]}));
+        Setwalletadd(addr[0]); 
+        handlecalscore(addr[0])
         
-        // dispatch(getWalletNftsCount({ walletAddress:addr[0]}))
-        
-        //  dispatch(getWalletNftsCount({walletAddress:"0xfa3ce71036dd4564d7d8de19d2b90fb856c5be82"}))
-        // dispatch(getWalletNftsCount({walletAddress:addr[0]}))
-        
-        // dispatch(getHighestLtvLoans({walletAddress:addr[0]}))
-        
-        
-        // 0xfa3ce71036dd4564d7d8de19d2b90fb856c5be82
-      
-        
-       //  dispatch(getWalletAttributes( { walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
-        
-        
-        //  address && 
-        
-        //  address && 
-      //    dispatch(calcCreditScore({ walletAddress:addr[0]}))
-      //  //  dispatch(calcCreditScore({ walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}))
-        
-      //   //  address && 
-      //   dispatch(calcPreApproval({ walletAddress:addr[0]}))
-      //   // dispatch(fetchNFTsForOwner({walletAddress:addr[0]}))
-      //    dispatch(getWalletTokensAndAssets({walletAddress:addr[0]}))
-      // //  dispatch(getWalletTokensAndAssets({walletAddress:"0x3E18E3987b3B73F4E7CB80e2B25776Df7a30bb8b"}))
-
-        // 0x3E18E3987b3B73F4E7CB80e2B25776Df7a30bb8b
-      //   dispatch(fetchNFTsForOwner({walletAddress:addr[0]}));
-      // //  dispatch(fetchNFTsForOwner({walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
-      // // Fetch Tokens for a wallet address
-      //  dispatch(fetchTokensForOwner({ walletAddress:addr[0]}));
-       // dispatch(fetchTokensForOwner({ walletAddress:"0xD5aE740ED785Cf3Fa54A176eE855A721591343D4"}));
-       
-        //dispatch(fetchTitleForOwner({ walletAddress:"0x0fe93C4feBD368204D81758468EE5BFAF623fA5f"}))
-        // dispatch(fetchTitleForOwner({ walletAddress:addr[0]}))
        }
        );
      
       
         setConnectionStatus("Successfully Connected");
         // state.address = etherValue
+       
+        nextModal()
         console.log(connectionStatus)
+     
+
       } catch (error) {
         setConnectionStatus("Connection Failed");
         console.error("MetaMask connection error:", error);
@@ -101,9 +68,13 @@ let ethereum:any
    
   };
   
-  async function handlecalscore(e: FormEvent) {
-    nextModal()
-    e.preventDefault()
+  async function handlecalscore(addr : string) {
+   
+
+  
+    // nextModal()
+    // e.preventDefault();
+    // await connectToWallet();
     // setIsLoading(true);
     console.log("cal score ")
     // Setwalletadd(`0x0fe93c4febd368204d81758468ee5bfaf623fa5f`)
@@ -111,7 +82,7 @@ let ethereum:any
  
     // `0x0fe93c4febd368204d81758468ee5bfaf623fa5f`
 
-    const res = await calscore(walletadd).then((res: any) => {
+    const res = await calscore(addr).then((res: any) => {
       console.log(res.data)
       // setIsLoading(false);
       nextModal()
@@ -323,7 +294,7 @@ let ethereum:any
                   
                   </div>
                   <div className="flex-col justify-center mt-2">
-                    <button className="bg-white text-white font-bold py-2 px-4 rounded" onClick={handlecalscore}>
+                    <button className="bg-white text-white font-bold py-2 px-4 rounded" >
                       <img src="thirdconfirmedButton.svg" alt="Image wrap" className="mt-2 hover:shadow-lg" />
                     </button>
                     <img src="thirdscreenHinttext.svg" alt="Image wrap" className="mt-4" />
